@@ -70,6 +70,15 @@ namespace UserMaintenance {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fileba írás.
+        /// </summary>
+        internal static string CopyToFile {
+            get {
+                return ResourceManager.GetString("CopyToFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Neved.
         /// </summary>
         internal static string FullName {
