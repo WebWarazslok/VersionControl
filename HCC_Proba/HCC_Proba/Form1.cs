@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+Ôªøusing Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -6,8 +6,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Hotcakes.CommerceDTO.v1;
+using Hotcakes.CommerceDTO.v1.Catalog;
 using Hotcakes.CommerceDTO.v1.Client;
-using Hotcakes.CommerceDTO.v1.Membership;
 
 namespace HCC_Proba
 {
@@ -24,34 +24,59 @@ namespace HCC_Proba
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            
             string apiUrl = "http://20.234.113.211:8106";
             string apiPath = "/DesktopModules/Hotcakes/API/rest/v1/";
-            string endPoint = "products";
-            // PÈlda GET kÈrÈs az API-hoz
-            string response = await GetInfoEndPoint(apiUrl, ApiKey, apiPath,endPoint);
+            string endPoint = "orders";
+            string transactionId = "B12F0CAC-F60A-44F1-BA45-6240201180BC";
+            // P√©lda GET k√©r√©s az API-hoz
+            string response = await GetInfoEndPoint(apiUrl, ApiKey, apiPath,endPoint, transactionId);
 
-           /* string url = "http://20.234.113.211:8106";
-            string key = "1-2d78ad9c-d5ca-46e7-8cbc-066d8e72b40c";
-
-            Api proxy = new Api(url, key);
-
-            // call the API to find total number of customer accounts in the store
-            ApiResponse<long> response = proxy.ProductsCountOfAll();*/
+           
             
-            // JSON v·lasz feldolgoz·sa Ès az eredmÈny kinyerÈse
+            // JSON v√°lasz feldolgoz√°sa √©s az eredm√©ny kinyer√©se
             JObject jsonResponse = JObject.Parse(response);
-            string result = jsonResponse["Content"].ToString();
 
-            // Az eredmÈny megjelenÌtÈse a RichTextBox-ban
+            // A Content t√∂mb lek√©rdez√©se
+            JArray contentArray = (JArray)jsonResponse["Content"];
+            int i = 0;
+            // Az egyes elemek lek√©rdez√©se a t√∂mbb≈ël
+            foreach (JObject item in contentArray)
+            {
+                
+                if (i< 10&& item["UserEmail"].ToString()!= "info@hotcakescommerce.com")
+                {
+                    string orderbvin = item["bvin"].ToString();
+                    string orderEmail = item["UserEmail"].ToString();
+                    richTextBox1.AppendText($"Order bvin: {orderbvin}; Order Email: {orderEmail}\n");
+                    i++;
+                }
+                
+            }
+
+            //JSON respone feldolgoz√°sa t√∂mbbe
+            //string[] result = jsonResponse["Content"].ToString().Split(',');
+
+            // if (jsonResponse["Content"]["bvin"]!=null)
+            //{
+            //string[] result = jsonResponse["Content"]["bvin"].ToString().Split(',');
+              //  richTextBox1.Text += result;
+            //}
             
-            richTextBox1.Text = result;
+            
+            // Az eredm√©ny megjelen√≠t√©se a RichTextBox-ban
+
+            /*for (int i = 0; i < result.Length; i++)
+            {
+                richTextBox1.Text += result[i];
+            }*/
 
         }
 
-        static async Task<string> GetInfoEndPoint(string apiUrl, string apiKey, string apiPath, string endPoint)
+        static async Task<string> GetInfoEndPoint(string apiUrl, string apiKey, string apiPath, string endPoint, string transID)
         {
-            string catsEndpoint = $"{apiUrl}{apiPath}{endPoint}?key={apiKey}&countonly=1";
-
+             string catsEndpoint = $"{apiUrl}{apiPath}{endPoint}?key={apiKey}";
+            //string catsEndpoint = $"{apiUrl}{apiPath}{endPoint}/{transID}?key={apiKey}";
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Api-Key", apiKey);
 
             var response = await client.GetAsync(catsEndpoint);
@@ -62,7 +87,7 @@ namespace HCC_Proba
             }
             else
             {
-                return $"Hiba a termÈkek lekÈrdezÈsekor: {response.StatusCode}";
+                return $"Hiba a term√©kek lek√©rdez√©sekor: {response.StatusCode}";
             }
         }
 
