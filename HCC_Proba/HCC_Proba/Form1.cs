@@ -5,9 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Hotcakes.CommerceDTO.v1;
-using Hotcakes.CommerceDTO.v1.Catalog;
-using Hotcakes.CommerceDTO.v1.Client;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -19,7 +16,7 @@ namespace HCC_Proba
 {
     public partial class Form1 : Form
     {
-
+        private const string xd = "xd";
         private static readonly HttpClient client = new HttpClient();
         private const string ApiKey = "1-2d78ad9c-d5ca-46e7-8cbc-066d8e72b40c";
         private const string apiUrl = "http://20.234.113.211:8106";
