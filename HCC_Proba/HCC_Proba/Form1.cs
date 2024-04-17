@@ -318,34 +318,42 @@ namespace HCC_Proba
         {
             // Change the background color of textbox1 when it gets focus
             textBox1.BackColor = Color.Gainsboro; // You can change the color to any desired color
+            textBox1.ForeColor = Color.DarkRed;
         }
         private void Textbox2_GotFocus(object sender, EventArgs e)
         {
             textBox2.BackColor = Color.Gainsboro;
+            textBox2.ForeColor = Color.DarkRed;
         }
         private void Textbox3_GotFocus(object sender, EventArgs e)
         {
             textBox3.BackColor = Color.Gainsboro;
+            textBox3.ForeColor = Color.DarkRed;
         }
         private void Textbox4_GotFocus(object sender, EventArgs e)
         {
             textBox4.BackColor = Color.Gainsboro; 
+            textBox4.ForeColor = Color.DarkRed;
         }
         private void Textbox1_LostFocus(object sender, EventArgs e)
         {
             textBox1.BackColor = Color.DimGray;
+            textBox1.ForeColor = Color.White;
         }
         private void Textbox2_LostFocus(object sender, EventArgs e)
         {
             textBox2.BackColor = Color.DimGray;
+            textBox2.ForeColor = Color.White;
         }
         private void Textbox3_LostFocus(object sender, EventArgs e)
         {
             textBox3.BackColor = Color.DimGray;
+            textBox3.ForeColor = Color.White;
         }
         private void Textbox4_LostFocus(object sender, EventArgs e)
         {
             textBox4.BackColor = Color.DimGray;
+            textBox4.ForeColor = Color.White;
         }
         #endregion
     }
