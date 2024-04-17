@@ -11,12 +11,13 @@ using System.Drawing.Imaging;
 using System.Text;
 using System.Drawing.Printing;
 using System.Text.RegularExpressions;
+using System.Drawing.Drawing2D;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HCC_Proba
 {
     public partial class Form1 : Form
     {
-        private const string xd = "xd";
         private static readonly HttpClient client = new HttpClient();
         private const string ApiKey = "1-2d78ad9c-d5ca-46e7-8cbc-066d8e72b40c";
         private const string apiUrl = "http://20.234.113.211:8106";
@@ -28,17 +29,25 @@ namespace HCC_Proba
         public string giftCardNum = "";
         // specify the gift card expiration date
         public DateTime expirationDate = DateTime.Now.Date.AddYears(1);
+        private Point windowLocation;
 
         public Form1()
         {
             InitializeComponent();
+            MakePanelRounded(panel1, 70);
+            MakePanelRounded(panel2, 70);
         }
-
-
-
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            textBox1.GotFocus += Textbox1_GotFocus;
+            textBox2.GotFocus += Textbox2_GotFocus;
+            textBox3.GotFocus += Textbox3_GotFocus;
+            textBox4.GotFocus += Textbox4_GotFocus;
+            textBox1.LostFocus += Textbox1_LostFocus;
+            textBox2.LostFocus += Textbox2_LostFocus;
+            textBox3.LostFocus += Textbox3_LostFocus;
+            textBox4.LostFocus += Textbox4_LostFocus;
 
             //Regions
 
@@ -75,9 +84,9 @@ namespace HCC_Proba
             }
 
             //Label changes
-            if (expirationDate.Month<10)
+            if (expirationDate.Month < 10)
             {
-                if (expirationDate.Day<10)
+                if (expirationDate.Day < 10)
                 {
                     lbl_erv.Text = $"{expirationDate.Year.ToString()}.0{expirationDate.Month.ToString()}.0{expirationDate.Day.ToString()}";
                 }
@@ -110,7 +119,7 @@ namespace HCC_Proba
         }
 
         //POST REQUEST
-        private async void Button1_Click(object sender, EventArgs e)
+        private async void button_woc1_Click(object sender, EventArgs e)
         {
             string email = textBox2.Text.Trim();
 
@@ -149,11 +158,66 @@ namespace HCC_Proba
                         if (response.IsSuccessStatusCode)
                         {
                             string responseBody = await response.Content.ReadAsStringAsync();
-                            MessageBox.Show("POST request successful!");
+                            MessageBox.Show("Sikeres kártyagenerálás!");
+                            PrintDialog printDialog = new PrintDialog();
+                            PrintDocument printDocument = new PrintDocument();
+
+                            printDialog.Document = printDocument;
+
+                            if (printDialog.ShowDialog() == DialogResult.OK)
+                            {
+                                printDocument.PrintPage += (sender, e) =>
+                                {
+                                    int dpi = 300; // Set desired DPI
+                                    int margin = 10;
+                                    int panel1PrintedHeight = (int)(panel1.Height * dpi / 96.0); // Calculate printed height of panel1
+                                    int panel2PrintedHeight = (int)(panel2.Height * dpi / 96.0); // Calculate printed height of panel2
+
+                                    using (Bitmap bmp = new Bitmap((int)(panel1.Width * dpi / 96.0), panel1PrintedHeight))
+                                    using (Graphics g = Graphics.FromImage(bmp))
+                                    {
+                                        g.PageUnit = GraphicsUnit.Pixel;
+                                        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                                        g.CompositingQuality = CompositingQuality.HighQuality;
+                                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                                        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                                        // Draw panel1 content onto bmp
+                                        panel1.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+
+                                        // Draw bmp onto the print page
+                                        e.Graphics.DrawImage(bmp, 0, 0);
+
+                                        // Calculate the position for panel2 below panel1
+                                        int panel2PrintedTop = panel1.Height+margin;
+
+                                        // Create a new bitmap and graphics object for panel2
+                                        using (Bitmap bmp2 = new Bitmap((int)(panel2.Width * dpi / 96.0), panel2PrintedHeight))
+                                        using (Graphics g2 = Graphics.FromImage(bmp2))
+                                        {
+                                            g.PageUnit = GraphicsUnit.Pixel;
+                                            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                                            g.CompositingQuality = CompositingQuality.HighQuality;
+                                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                            g.SmoothingMode = SmoothingMode.AntiAlias;
+                                            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                                            // Draw panel2 content onto bmp2
+                                            panel2.DrawToBitmap(bmp2, new Rectangle(0, 0, bmp2.Width, bmp2.Height));
+
+                                            // Draw bmp2 onto the print page below panel1
+                                            e.Graphics.DrawImage(bmp2, 0, panel2PrintedTop);
+                                        }
+
+                                    }
+                                };
+                                printDocument.Print();
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("POST request failed. Status code: " + response.StatusCode);
+                            MessageBox.Show("Sikertelen kártyagenerálás! Status code: " + response.StatusCode);
                         }
                     }
                     catch (Exception ex)
@@ -203,24 +267,86 @@ namespace HCC_Proba
             lbl_kod.Text = textBox4.Text;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            PrintDialog printDialog = new PrintDialog();
-            PrintDocument printDocument = new PrintDocument();
+            this.windowLocation = e.Location;
+        }
 
-            printDialog.Document = printDocument;
-
-            if (printDialog.ShowDialog() == DialogResult.OK)
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
             {
-                printDocument.PrintPage += (sender, e) =>
-                {
-                    Bitmap bmp = new Bitmap(panel1.Width, panel1.Height);
-                    panel1.DrawToBitmap(bmp, new Rectangle(0, 0, panel1.Width, panel1.Height));
-                    e.Graphics.DrawImage(bmp, 0, 0);
-                };
+                // Refers to the Form location (or whatever you trigger the event on)
+                this.Location = new Point(
+                    (this.Location.X - windowLocation.X) + e.X,
+                    (this.Location.Y - windowLocation.Y) + e.Y
+                );
 
-                printDocument.Print();
+                this.Update();
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #region Design
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, this.panel1.ClientRectangle, Color.DarkRed, ButtonBorderStyle.Solid);
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, this.panel2.ClientRectangle, Color.DarkRed, ButtonBorderStyle.Solid);
+        }
+
+        private void MakePanelRounded(Panel panel, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(panel.ClientRectangle.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(panel.ClientRectangle.Width - radius, panel.ClientRectangle.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, panel.ClientRectangle.Height - radius, radius, radius, 90, 90);
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.CloseFigure();
+
+            panel.Region = new Region(path);
+        }
+        private void Textbox1_GotFocus(object sender, EventArgs e)
+        {
+            // Change the background color of textbox1 when it gets focus
+            textBox1.BackColor = Color.Gainsboro; // You can change the color to any desired color
+        }
+        private void Textbox2_GotFocus(object sender, EventArgs e)
+        {
+            textBox2.BackColor = Color.Gainsboro;
+        }
+        private void Textbox3_GotFocus(object sender, EventArgs e)
+        {
+            textBox3.BackColor = Color.Gainsboro;
+        }
+        private void Textbox4_GotFocus(object sender, EventArgs e)
+        {
+            textBox4.BackColor = Color.Gainsboro; 
+        }
+        private void Textbox1_LostFocus(object sender, EventArgs e)
+        {
+            textBox1.BackColor = Color.DimGray;
+        }
+        private void Textbox2_LostFocus(object sender, EventArgs e)
+        {
+            textBox2.BackColor = Color.DimGray;
+        }
+        private void Textbox3_LostFocus(object sender, EventArgs e)
+        {
+            textBox3.BackColor = Color.DimGray;
+        }
+        private void Textbox4_LostFocus(object sender, EventArgs e)
+        {
+            textBox4.BackColor = Color.DimGray;
+        }
+        #endregion
     }
 }
