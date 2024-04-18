@@ -13,6 +13,7 @@ using System.Drawing.Printing;
 using System.Text.RegularExpressions;
 using System.Drawing.Drawing2D;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Runtime.InteropServices;
 
 namespace HCC_Proba
 {
@@ -34,8 +35,8 @@ namespace HCC_Proba
         public Form1()
         {
             InitializeComponent();
-            MakePanelRounded(panel1, 70);
-            MakePanelRounded(panel2, 70);
+            MakePanelRounded(panel1, 50);
+            MakePanelRounded(panel2, 50);
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -48,6 +49,11 @@ namespace HCC_Proba
             textBox2.LostFocus += Textbox2_LostFocus;
             textBox3.LostFocus += Textbox3_LostFocus;
             textBox4.LostFocus += Textbox4_LostFocus;
+
+            float cornerRadius = 50; // Adjust the radius value as needed
+
+            // Get the region for the rounded rectangle
+            //ApplyRoundedCorners(pictureBox1, cornerRadius);
 
             //Regions
 
@@ -190,7 +196,7 @@ namespace HCC_Proba
                                         e.Graphics.DrawImage(bmp, 0, 0);
 
                                         // Calculate the position for panel2 below panel1
-                                        int panel2PrintedTop = panel1.Height+margin;
+                                        int panel2PrintedTop = panel1.Height + margin;
 
                                         // Create a new bitmap and graphics object for panel2
                                         using (Bitmap bmp2 = new Bitmap((int)(panel2.Width * dpi / 96.0), panel2PrintedHeight))
@@ -294,12 +300,37 @@ namespace HCC_Proba
         #region Design
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            ControlPaint.DrawBorder(e.Graphics, this.panel1.ClientRectangle, Color.DarkRed, ButtonBorderStyle.Solid);
+            base.OnPaint(e);
+
+            Panel panel = sender as Panel;
+            if (panel != null)
+            {
+                int borderRadius = 50; // Adjust the radius value as needed
+
+                using (GraphicsPath path = RoundedRectangle(panel.ClientRectangle, borderRadius))
+                using (Pen pen = new Pen(Color.DarkRed, 2)) // Adjust the width as needed
+                {
+                    e.Graphics.DrawPath(pen, path);
+                }
+            }
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
-            ControlPaint.DrawBorder(e.Graphics, this.panel2.ClientRectangle, Color.DarkRed, ButtonBorderStyle.Solid);
+            Panel panel = sender as Panel;
+            if (panel != null)
+            {
+                int borderRadius = 30; // Adjust the radius value as needed
+
+                // Define the rectangle for the border
+                RectangleF borderRectangle = new RectangleF(panel.ClientRectangle.Location, new SizeF(panel.ClientRectangle.Width - 1, panel.ClientRectangle.Height - 1));
+
+                using (GraphicsPath path = RoundedRectangle(borderRectangle, borderRadius))
+                using (Pen pen = new Pen(Color.DarkRed, 2)) // Adjust the width as needed
+                {
+                    e.Graphics.DrawPath(pen, path);
+                }
+            }
         }
 
         private void MakePanelRounded(Panel panel, int radius)
@@ -332,7 +363,7 @@ namespace HCC_Proba
         }
         private void Textbox4_GotFocus(object sender, EventArgs e)
         {
-            textBox4.BackColor = Color.Gainsboro; 
+            textBox4.BackColor = Color.Gainsboro;
             textBox4.ForeColor = Color.DarkRed;
         }
         private void Textbox1_LostFocus(object sender, EventArgs e)
@@ -355,6 +386,91 @@ namespace HCC_Proba
             textBox4.BackColor = Color.DimGray;
             textBox4.ForeColor = Color.White;
         }
+
+
+
+        private GraphicsPath RoundedRectangle(RectangleF rectangle, float cornerRadius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float radius = cornerRadius * 2;
+            SizeF size = new SizeF(radius, radius);
+            RectangleF arc = new RectangleF(rectangle.Location, size);
+
+            path.AddArc(arc, 180, 90);
+            arc.X = rectangle.Right - radius;
+            path.AddArc(arc, 270, 90);
+            arc.Y = rectangle.Bottom - radius;
+            path.AddArc(arc, 0, 90);
+            arc.X = rectangle.Left;
+            path.AddArc(arc, 90, 90);
+            path.CloseFigure();
+
+            return path;
+        }
+        /*private void ApplyRoundedCorners(PictureBox pictureBox, float cornerRadius)
+        {
+            // Get the region for the rounded rectangle based on pictureBox1 width
+            GraphicsPath roundedPath = RoundedRectangleLeft(pictureBox.ClientSize.Width, pictureBox.ClientSize.Height, cornerRadius);
+            Region roundedRegion = new Region(roundedPath);
+
+            // Apply the rounded region to the PictureBox
+            pictureBox.Region = roundedRegion;
+        }
+
+        private GraphicsPath RoundedRectangleLeft(float width, float height, float cornerRadius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float radius = cornerRadius * 2;
+            SizeF size = new SizeF(radius, radius);
+            RectangleF arc = new RectangleF(PointF.Empty, size);
+
+            // Add left top arc
+            path.AddArc(arc, 180, 90);
+
+            // Calculate the location for the left bottom arc
+            arc.Y = height - radius;
+
+            // Add left bottom arc
+            path.AddArc(arc, 90, 90);
+
+            path.AddLine(cornerRadius, height, width, height);
+
+            path.AddLine(width, height, width, 0);
+
+            path.AddLine(width, 0, cornerRadius, 0);
+
+            // Close the figure
+            path.CloseFigure();
+
+            return path;
+        }
+        private GraphicsPath RoundedRectangleRight(RectangleF rectangle, float cornerRadius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float radius = cornerRadius * 2;
+            SizeF size = new SizeF(radius, radius);
+            RectangleF arc = new RectangleF(rectangle.Location, size);
+
+            // Calculate the location for the right top arc
+            arc.X = rectangle.Right - radius;
+
+            // Add right top arc
+            path.AddArc(arc, 270, 90);
+
+            // Calculate the location for the right bottom arc
+            arc.Y = rectangle.Bottom - radius;
+
+            // Add right bottom arc
+            path.AddArc(arc, 0, 90);
+
+            // Create the straight lines to connect the arcs
+            path.AddLine(rectangle.Right, rectangle.Bottom - cornerRadius, rectangle.Right, rectangle.Top + cornerRadius);
+
+            // Close the figure
+            path.CloseFigure();
+
+            return path;
+        }*/
         #endregion
     }
 }
