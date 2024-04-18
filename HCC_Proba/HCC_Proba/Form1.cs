@@ -41,6 +41,7 @@ namespace HCC_Proba
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            this.WindowState = FormWindowState.Maximized;
             textBox1.GotFocus += Textbox1_GotFocus;
             textBox2.GotFocus += Textbox2_GotFocus;
             textBox3.GotFocus += Textbox3_GotFocus;
@@ -53,7 +54,8 @@ namespace HCC_Proba
             float cornerRadius = 50; // Adjust the radius value as needed
 
             // Get the region for the rounded rectangle
-            //ApplyRoundedCorners(pictureBox1, cornerRadius);
+            ApplyRoundedCorners(pictureBox1, cornerRadius, true);
+            ApplyRoundedCorners(pictureBox2, cornerRadius, false);
 
             //Regions
 
@@ -320,7 +322,7 @@ namespace HCC_Proba
             Panel panel = sender as Panel;
             if (panel != null)
             {
-                int borderRadius = 30; // Adjust the radius value as needed
+                int borderRadius = 50; // Adjust the radius value as needed
 
                 // Define the rectangle for the border
                 RectangleF borderRectangle = new RectangleF(panel.ClientRectangle.Location, new SizeF(panel.ClientRectangle.Width - 1, panel.ClientRectangle.Height - 1));
@@ -407,14 +409,26 @@ namespace HCC_Proba
 
             return path;
         }
-        /*private void ApplyRoundedCorners(PictureBox pictureBox, float cornerRadius)
+        private void ApplyRoundedCorners(PictureBox pictureBox, float cornerRadius, bool left)
         {
-            // Get the region for the rounded rectangle based on pictureBox1 width
-            GraphicsPath roundedPath = RoundedRectangleLeft(pictureBox.ClientSize.Width, pictureBox.ClientSize.Height, cornerRadius);
-            Region roundedRegion = new Region(roundedPath);
+            if (left)
+            {
+                // Get the region for the rounded rectangle based on pictureBox1 width
+                GraphicsPath roundedPath = RoundedRectangleLeft(pictureBox.ClientSize.Width, pictureBox.ClientSize.Height, cornerRadius);
+                Region roundedRegion = new Region(roundedPath);
 
-            // Apply the rounded region to the PictureBox
-            pictureBox.Region = roundedRegion;
+                // Apply the rounded region to the PictureBox
+                pictureBox.Region = roundedRegion;
+            }
+            else
+            {
+                // Get the region for the rounded rectangle based on pictureBox1 width
+                GraphicsPath roundedPath = RoundedRectangleRight(pictureBox.ClientSize.Width, pictureBox.ClientSize.Height, cornerRadius);
+                Region roundedRegion = new Region(roundedPath);
+
+                // Apply the rounded region to the PictureBox
+                pictureBox.Region = roundedRegion;
+            }
         }
 
         private GraphicsPath RoundedRectangleLeft(float width, float height, float cornerRadius)
@@ -429,48 +443,45 @@ namespace HCC_Proba
 
             // Calculate the location for the left bottom arc
             arc.Y = height - radius;
+            path.AddLine(0, cornerRadius, 0, height - cornerRadius);
 
             // Add left bottom arc
             path.AddArc(arc, 90, 90);
-
             path.AddLine(cornerRadius, height, width, height);
-
             path.AddLine(width, height, width, 0);
-
             path.AddLine(width, 0, cornerRadius, 0);
+
 
             // Close the figure
             path.CloseFigure();
 
             return path;
         }
-        private GraphicsPath RoundedRectangleRight(RectangleF rectangle, float cornerRadius)
+        private GraphicsPath RoundedRectangleRight(float width, float height, float cornerRadius)
         {
             GraphicsPath path = new GraphicsPath();
             float radius = cornerRadius * 2;
             SizeF size = new SizeF(radius, radius);
-            RectangleF arc = new RectangleF(rectangle.Location, size);
+            RectangleF arc = new RectangleF(PointF.Empty, size);
 
-            // Calculate the location for the right top arc
-            arc.X = rectangle.Right - radius;
-
-            // Add right top arc
-            path.AddArc(arc, 270, 90);
-
-            // Calculate the location for the right bottom arc
-            arc.Y = rectangle.Bottom - radius;
-
-            // Add right bottom arc
+            path.AddLine(0, 0, 0, height);
+            path.AddLine(0, height, width-cornerRadius, height);
+            arc.Y = height - radius;
+            arc.X = width-radius;
             path.AddArc(arc, 0, 90);
+            path.AddLine(width, height-cornerRadius, width, cornerRadius);
+            arc.X = width-radius;
+            arc.Y = 0;
+            path.AddArc(arc, 270, 90);
+            path.AddLine(width-cornerRadius, 0, 0, 0);
 
-            // Create the straight lines to connect the arcs
-            path.AddLine(rectangle.Right, rectangle.Bottom - cornerRadius, rectangle.Right, rectangle.Top + cornerRadius);
 
             // Close the figure
             path.CloseFigure();
 
             return path;
-        }*/
+        }
+
         #endregion
     }
 }
