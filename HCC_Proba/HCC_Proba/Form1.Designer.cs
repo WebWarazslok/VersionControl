@@ -65,6 +65,7 @@
             pictureBox2 = new PictureBox();
             button_woc1 = new ePOSOne.btnProduct.Button_WOC();
             button1 = new Button();
+            label10 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -83,7 +84,7 @@
             textBox1.BorderStyle = BorderStyle.None;
             textBox1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             textBox1.ForeColor = Color.White;
-            textBox1.Location = new Point(757, 134);
+            textBox1.Location = new Point(763, 299);
             textBox1.Margin = new Padding(5, 3, 5, 2);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(294, 28);
@@ -97,7 +98,7 @@
             textBox2.BorderStyle = BorderStyle.None;
             textBox2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             textBox2.ForeColor = Color.White;
-            textBox2.Location = new Point(757, 180);
+            textBox2.Location = new Point(763, 345);
             textBox2.Margin = new Padding(3, 2, 3, 2);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(294, 28);
@@ -110,7 +111,7 @@
             textBox3.BorderStyle = BorderStyle.None;
             textBox3.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             textBox3.ForeColor = Color.White;
-            textBox3.Location = new Point(757, 224);
+            textBox3.Location = new Point(763, 389);
             textBox3.Margin = new Padding(3, 2, 3, 2);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(294, 28);
@@ -120,9 +121,8 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(682, 134);
+            label1.Location = new Point(688, 299);
             label1.Name = "label1";
             label1.Size = new Size(55, 30);
             label1.TabIndex = 7;
@@ -131,9 +131,8 @@
             // 
             // label2
             // 
-            label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(622, 180);
+            label2.Location = new Point(628, 345);
             label2.Name = "label2";
             label2.Size = new Size(115, 30);
             label2.TabIndex = 8;
@@ -142,9 +141,8 @@
             // 
             // label3
             // 
-            label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(652, 221);
+            label3.Location = new Point(658, 386);
             label3.Name = "label3";
             label3.Size = new Size(85, 30);
             label3.TabIndex = 9;
@@ -181,7 +179,6 @@
             // 
             // lbl_cardName
             // 
-            lbl_cardName.AutoSize = true;
             lbl_cardName.Font = new Font("Britannic Bold", 48F, FontStyle.Regular, GraphicsUnit.Point);
             lbl_cardName.ForeColor = Color.DarkRed;
             lbl_cardName.Location = new Point(103, 92);
@@ -196,7 +193,7 @@
             // 
             pictureBox1.BackgroundImage = Properties.Resources.előlap;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox1.Location = new Point(-9, 3);
+            pictureBox1.Location = new Point(3, 3);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(196, 357);
             pictureBox1.TabIndex = 5;
@@ -240,7 +237,6 @@
             // 
             // lbl_NevName
             // 
-            lbl_NevName.AutoSize = true;
             lbl_NevName.BackColor = Color.Silver;
             lbl_NevName.Font = new Font("Verdana", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             lbl_NevName.ForeColor = Color.Black;
@@ -266,11 +262,11 @@
             // 
             lbl_nev.AutoSize = true;
             lbl_nev.BackColor = Color.White;
-            lbl_nev.Font = new Font("Caramel and Vanilla ", 15.7499981F, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_nev.Font = new Font("Script MT Bold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             lbl_nev.ForeColor = Color.DarkRed;
-            lbl_nev.Location = new Point(10, 4);
+            lbl_nev.Location = new Point(12, 8);
             lbl_nev.Name = "lbl_nev";
-            lbl_nev.Size = new Size(50, 33);
+            lbl_nev.Size = new Size(48, 25);
             lbl_nev.TabIndex = 0;
             lbl_nev.Text = "Név";
             lbl_nev.UseWaitCursor = true;
@@ -281,7 +277,7 @@
             textBox4.BorderStyle = BorderStyle.None;
             textBox4.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             textBox4.ForeColor = Color.White;
-            textBox4.Location = new Point(757, 269);
+            textBox4.Location = new Point(763, 434);
             textBox4.Margin = new Padding(3, 2, 3, 2);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(294, 28);
@@ -292,22 +288,21 @@
             // textBox5
             // 
             textBox5.BackColor = Color.Black;
-            textBox5.BorderStyle = BorderStyle.None;
+            textBox5.BorderStyle = BorderStyle.FixedSingle;
             textBox5.Enabled = false;
             textBox5.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             textBox5.ForeColor = Color.White;
-            textBox5.Location = new Point(757, 315);
+            textBox5.Location = new Point(763, 480);
             textBox5.Margin = new Padding(3, 2, 3, 2);
             textBox5.Name = "textBox5";
-            textBox5.Size = new Size(294, 28);
+            textBox5.Size = new Size(294, 35);
             textBox5.TabIndex = 14;
             textBox5.UseWaitCursor = true;
             // 
             // label4
             // 
-            label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(684, 267);
+            label4.Location = new Point(690, 432);
             label4.Name = "label4";
             label4.Size = new Size(53, 30);
             label4.TabIndex = 5;
@@ -316,9 +311,8 @@
             // 
             // label5
             // 
-            label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(638, 315);
+            label5.Location = new Point(644, 480);
             label5.Name = "label5";
             label5.Size = new Size(99, 30);
             label5.TabIndex = 5;
@@ -355,7 +349,6 @@
             // 
             // lbl_kodName
             // 
-            lbl_kodName.AutoSize = true;
             lbl_kodName.Font = new Font("Verdana", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             lbl_kodName.ForeColor = Color.Black;
             lbl_kodName.Location = new Point(3, 10);
@@ -367,7 +360,6 @@
             // 
             // lbl_ervName
             // 
-            lbl_ervName.AutoSize = true;
             lbl_ervName.Font = new Font("Verdana", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             lbl_ervName.ForeColor = Color.Black;
             lbl_ervName.Location = new Point(3, 11);
@@ -398,7 +390,6 @@
             // 
             // label9
             // 
-            label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label9.ForeColor = Color.Firebrick;
             label9.Location = new Point(18, 241);
@@ -410,7 +401,6 @@
             // 
             // label8
             // 
-            label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label8.Location = new Point(18, 199);
             label8.Name = "label8";
@@ -421,7 +411,6 @@
             // 
             // label7
             // 
-            label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label7.Location = new Point(18, 178);
             label7.Name = "label7";
@@ -432,7 +421,6 @@
             // 
             // label6
             // 
-            label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label6.Location = new Point(18, 157);
             label6.Name = "label6";
@@ -502,7 +490,7 @@
             // 
             pictureBox2.BackgroundImage = Properties.Resources.hatulja;
             pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox2.Location = new Point(369, 3);
+            pictureBox2.Location = new Point(370, 3);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(196, 357);
             pictureBox2.TabIndex = 6;
@@ -518,7 +506,7 @@
             button_woc1.FlatStyle = FlatStyle.Flat;
             button_woc1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             button_woc1.ForeColor = Color.Transparent;
-            button_woc1.Location = new Point(812, 359);
+            button_woc1.Location = new Point(818, 533);
             button_woc1.Name = "button_woc1";
             button_woc1.OnHoverBorderColor = Color.Transparent;
             button_woc1.OnHoverButtonColor = Color.Firebrick;
@@ -536,7 +524,7 @@
             button1.BackColor = Color.DarkRed;
             button1.FlatAppearance.BorderSize = 0;
             button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Varela Round", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            button1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point);
             button1.Location = new Point(1106, 0);
             button1.Name = "button1";
             button1.RightToLeft = RightToLeft.No;
@@ -547,12 +535,22 @@
             button1.UseWaitCursor = true;
             button1.Click += button1_Click;
             // 
+            // label10
+            // 
+            label10.Font = new Font("Segoe UI Semibold", 36F, FontStyle.Bold, GraphicsUnit.Point);
+            label10.Location = new Point(628, 204);
+            label10.Name = "label10";
+            label10.Size = new Size(429, 83);
+            label10.TabIndex = 17;
+            label10.Text = "Beviteli mezők:";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(1147, 760);
+            Controls.Add(label10);
             Controls.Add(button1);
             Controls.Add(button_woc1);
             Controls.Add(label5);
@@ -581,11 +579,9 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             roundedPanel1.ResumeLayout(false);
-            roundedPanel1.PerformLayout();
             roundedPanel4.ResumeLayout(false);
             roundedPanel4.PerformLayout();
             panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             roundedPanel3.ResumeLayout(false);
             roundedPanel3.PerformLayout();
@@ -634,5 +630,6 @@
         private Label label9;
         private myPanel.pnlRounded.RoundedPanel roundedPanel5;
         private myPanel.pnlRounded.RoundedPanel roundedPanel6;
+        private Label label10;
     }
 }
