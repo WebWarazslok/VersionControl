@@ -38,7 +38,6 @@ namespace HCC_Proba
             MakePanelRounded(panel1, 50);
             MakePanelRounded(panel2, 50);
         }
-
         private async void Form1_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
@@ -166,14 +165,14 @@ namespace HCC_Proba
                         if (response.IsSuccessStatusCode)
                         {
                             string responseBody = await response.Content.ReadAsStringAsync();
-                            MessageBox.Show("Sikeres kártyagenerálás!");
+                            //MessageBox.Show("Sikeres kártyagenerálás!");
                             PrintDialog printDialog = new PrintDialog();
                             PrintDocument printDocument = new PrintDocument();
-
                             printDialog.Document = printDocument;
-
                             if (printDialog.ShowDialog() == DialogResult.OK)
                             {
+                                Loading loadingForm = new Loading();
+                                loadingForm.ShowDialog();
                                 printDocument.PrintPage += (sender, e) =>
                                 {
                                     int dpi = 300; // Set desired DPI
@@ -215,12 +214,16 @@ namespace HCC_Proba
                                             panel2.DrawToBitmap(bmp2, new Rectangle(0, 0, bmp2.Width, bmp2.Height));
 
                                             // Draw bmp2 onto the print page below panel1
-                                            e.Graphics.DrawImage(bmp2, 0, panel2PrintedTop);
+                                            e.Graphics.DrawImage(bmp2, 0, panel1.Height-100);
                                         }
 
                                     }
                                 };
                                 printDocument.Print();
+                                Finished finished = new Finished();
+                                finished.ShowDialog();
+                                Application.Restart();
+                                Environment.Exit(0);
                             }
                         }
                         else
@@ -465,15 +468,15 @@ namespace HCC_Proba
             RectangleF arc = new RectangleF(PointF.Empty, size);
 
             path.AddLine(0, 0, 0, height);
-            path.AddLine(0, height, width-cornerRadius, height);
+            path.AddLine(0, height, width - cornerRadius, height);
             arc.Y = height - radius;
-            arc.X = width-radius;
+            arc.X = width - radius;
             path.AddArc(arc, 0, 90);
-            path.AddLine(width, height-cornerRadius, width, cornerRadius);
-            arc.X = width-radius;
+            path.AddLine(width, height - cornerRadius, width, cornerRadius);
+            arc.X = width - radius;
             arc.Y = 0;
             path.AddArc(arc, 270, 90);
-            path.AddLine(width-cornerRadius, 0, 0, 0);
+            path.AddLine(width - cornerRadius, 0, 0, 0);
 
 
             // Close the figure
